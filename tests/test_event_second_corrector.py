@@ -1,4 +1,5 @@
 import sc2reader
+
 from sc2reader_plugins import EventSecondCorrector
 
 

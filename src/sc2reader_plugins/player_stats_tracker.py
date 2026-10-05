@@ -50,13 +50,13 @@ class PlayerStatsTracker(BasePlugin):
         self.player_has_left = defaultdict(bool)
 
     def handleInitGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in replay.players:
             player.stats = defaultdict(dict)
             self.player_has_left[player.pid] = False
 
     def handlePlayerStatsEvent(self, event: "PlayerStatsEvent", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player.pid == 16 or self.player_has_left[player.pid]:
             return
 
@@ -100,11 +100,11 @@ class PlayerStatsTracker(BasePlugin):
         player.stats["resources_lost"][event.second] = event.resources_lost
 
     def handlePlayerLeaveEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         self.player_has_left[player.pid] = True
 
     def handleEndGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in replay.players:
             player.stats["avg_income_minerals"] = sum(
                 player.stats["income_minerals"].values()

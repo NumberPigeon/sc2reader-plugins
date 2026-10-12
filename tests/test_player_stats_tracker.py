@@ -1,5 +1,6 @@
 import sc2reader
 from sc2reader.engine.plugins import ContextLoader
+
 from sc2reader_plugins import EventSecondCorrector, PlayerStatsTracker
 
 

@@ -50,28 +50,28 @@ class APMTracker(BasePlugin):
         self.players = replay.players
 
     def handleControlGroupEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player not in self.players:
             return
         player.aps[event.second] += 1
         player.apm[int(event.second / 60)] += 1
 
     def handleSelectionEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player not in self.players:
             return
         player.aps[event.second] += 1
         player.apm[int(event.second / 60)] += 1
 
     def handleCommandEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player not in self.players:
             return
         player.aps[event.second] += 1
         player.apm[int(event.second / 60)] += 1
 
     def handlePlayerLeaveEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player not in self.players:
             return
         player.seconds_played = event.second

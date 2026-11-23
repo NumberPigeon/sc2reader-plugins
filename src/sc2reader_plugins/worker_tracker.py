@@ -35,7 +35,7 @@ class WorkerTracker(BasePlugin):
     name = "WorkerTracker"
 
     def handleInitGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in replay.players:
             player.worker_count = defaultdict(int)
             player.worker_trained = defaultdict(int)
@@ -45,7 +45,7 @@ class WorkerTracker(BasePlugin):
         self.players = set(replay.players)
 
     def handleUnitBornEvent(self, event: "UnitBornEvent", replay: "Replay"):
-        player: "Player" = event.unit_controller
+        player: Player = event.unit_controller
         if not player or player not in self.players:
             return
         if _is_worker(event.unit):
@@ -54,7 +54,7 @@ class WorkerTracker(BasePlugin):
                 player.worker_trained[event.second] += 1
 
     def handleUnitDiedEvent(self, event: "UnitDiedEvent", replay: "Replay"):
-        player: "Player" = event.unit.owner
+        player: Player = event.unit.owner
         if player not in self.players:
             return
         if _is_worker(event.unit):
@@ -64,19 +64,19 @@ class WorkerTracker(BasePlugin):
                 pass
             else:
                 player.worker_lost[event.second] += 1
-                killer_player: "Player" = event.killing_player
+                killer_player: Player = event.killing_player
                 if killer_player is not None:
                     killer_player.worker_killed[event.second] += 1
 
     def handlePlayerLeaveEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         player.seconds_played = event.second
 
     def handleEndGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in self.players:
             # fill the dicts
-            for i in range(0, player.seconds_played):
+            for i in range(player.seconds_played):
                 if i not in player.worker_count:
                     player.worker_count[i + 1] = player.worker_count[i]
                 else:

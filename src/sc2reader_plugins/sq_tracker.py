@@ -37,7 +37,7 @@ class SQTracker(BasePlugin):
         self.player_has_left = defaultdict(bool)
 
     def handleInitGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in replay.players:
             player.sq = defaultdict(float)
             player.seconds_played = replay.length.seconds
@@ -46,7 +46,7 @@ class SQTracker(BasePlugin):
             self.player_has_left[player.pid] = False
 
     def handlePlayerStatsEvent(self, event: "PlayerStatsEvent", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         if player.pid == 16 or self.player_has_left[player.pid]:
             return
 
@@ -58,12 +58,12 @@ class SQTracker(BasePlugin):
         self.unspent_resources[player.pid].append(unspent_resources)
 
     def handlePlayerLeaveEvent(self, event: "Event", replay: "Replay"):
-        player: "Player" = event.player
+        player: Player = event.player
         player.seconds_played = event.second
         self.player_has_left[player.pid] = True
 
     def handleEndGame(self, event: "Event", replay: "Replay"):
-        player: "Player"
+        player: Player
         for player in replay.players:
             if len(self.income_rates[player.pid]) > 0:
                 player.avg_sq = _sq(
